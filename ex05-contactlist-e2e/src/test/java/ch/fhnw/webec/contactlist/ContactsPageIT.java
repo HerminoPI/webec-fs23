@@ -1,6 +1,5 @@
 package ch.fhnw.webec.contactlist;
 
-
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
@@ -14,7 +13,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-public class ContactsControllerIT {
+public class ContactsPageIT {
 
 
     @LocalServerPort

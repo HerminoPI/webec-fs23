@@ -1,35 +1,44 @@
 {# @pebvariable name="contactList" type="java.util.List<ch.fhnw.webec.contactlist.model.ContactListEntry>" #}
 {# @pebvariable name="contact" type="ch.fhnw.webec.contactlist.model.Contact" #}
 
-{% extends "layout" %}
-{% import "macros/contacts" %}
+    {% extends "layout" %}
+    {% import "macros/contacts" %}
 
-{% block title %}Contact List – Contacts{% endblock %}
+    {% block title %}Contact List – Contacts{% endblock %}
 
 {% block main%}
 <main id="contacts">
     <nav>
         <ul>
-            {% for entry in contactList %}
+                {% for entry in contactList %}
                 <li>
                     <a href="{{ href("/contacts/" + entry.id) }}"
                        class="{{ contact.id == entry.id ? "active" : "" }}">
-                        {{ entry.name }}
+                            {{ entry.name }}
                     </a>
                 </li>
-            {% endfor %}
+                {% endfor %}
         </ul>
     </nav>
     <div>
+
+
+        <form action="/contacts/search" method="get">
+            <input type="text" name="query" value="{{ query }}" placeholder="Search contacts...">
+            <button>search</button>
+            <button formaction="/contacts/clear">clear</button>
+        </form>
+
+
         {% if response.status == 404 %}
             <div class="error">
                 <strong>404</strong> – Contact not found
             </div>
-        {% elseif contact == null %}
+            {% elseif contact == null %}
             <div class="info">
                 Select a contact on the left
             </div>
-        {% else %}
+            {% else %}
             <table>
                 {{ row("First name", contact.firstName) }}
                 {{ row("Last name", contact.lastName) }}
@@ -40,5 +49,7 @@
             </table>
         {% endif %}
     </div>
+
+
 </main>
 {% endblock %}

@@ -52,4 +52,5 @@ public class ContactService {
                 .mapToInt(c -> c.getEmail().size())
                 .sum();
     }
+
 }
