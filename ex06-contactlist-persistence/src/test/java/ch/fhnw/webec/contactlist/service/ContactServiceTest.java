@@ -1,6 +1,7 @@
 package ch.fhnw.webec.contactlist.service;
 
 import ch.fhnw.webec.contactlist.SampleContactsAdder;
+import ch.fhnw.webec.contactlist.data.ContactRepository;
 import ch.fhnw.webec.contactlist.model.ContactListEntry;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
@@ -21,7 +22,7 @@ class ContactServiceTest {
 
     ContactServiceTest() throws IOException {
         var mapper = new ObjectMapper().configure(FAIL_ON_UNKNOWN_PROPERTIES, false);
-        service = new ContactService();
+        service = new ContactService(null);
         new SampleContactsAdder(mapper, service).addSampleContacts();
     }
 
@@ -30,8 +31,8 @@ class ContactServiceTest {
         var contactList = service.getContactList(null);
         assertNotNull(contactList);
         var ids = contactList.stream()
-                .mapToInt(ContactListEntry::getId)
-                .toArray();
+            .mapToInt(ContactListEntry::getId)
+            .toArray();
         assertArrayEquals(rangeClosed(1, 30).toArray(), ids);
     }
 
@@ -47,14 +48,14 @@ class ContactServiceTest {
     void search() {
         var results = service.getContactList("Engineer");
         Assertions.assertEquals(Set.of("Graeme Impett", "Chilton Treversh"),
-                results.stream().map(ContactListEntry::getName).collect(toSet()));
+            results.stream().map(ContactListEntry::getName).collect(toSet()));
     }
 
     @Test
     void searchIgnoresCase() {
         var results = service.getContactList("mO");
         Assertions.assertEquals(Set.of("Moll Mullarkey", "Seana Burberye"), // one in name, one in email
-                results.stream().map(ContactListEntry::getName).collect(toSet()));
+            results.stream().map(ContactListEntry::getName).collect(toSet()));
     }
 }
 

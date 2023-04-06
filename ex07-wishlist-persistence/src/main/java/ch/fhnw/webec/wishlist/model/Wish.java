@@ -1,5 +1,9 @@
 package ch.fhnw.webec.wishlist.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
@@ -8,16 +12,21 @@ import java.util.Set;
 
 import static java.util.Comparator.comparing;
 
+@Entity
 public class Wish {
 
+    @Id
+    @GeneratedValue
     private Integer id;
     private String description;
     private String url;
     private int priority;
+    @ManyToMany
     private Set<Category> categories = new HashSet<>();
     private LocalDate createdDate;
 
-    protected Wish() {} // for JSON deserialization (and later JPA)
+    protected Wish() {
+    } // for JSON deserialization (and later JPA)
 
     public Wish(String description, String url, int priority, Collection<Category> categories) {
         this.description = description;
@@ -69,7 +78,7 @@ public class Wish {
 
     public List<Category> getCategoriesSorted() {
         return categories.stream()
-                .sorted(comparing(Category::getName, String::compareToIgnoreCase))
-                .toList();
+            .sorted(comparing(Category::getName, String::compareToIgnoreCase))
+            .toList();
     }
 }
